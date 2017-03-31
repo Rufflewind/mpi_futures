@@ -1,0 +1,40 @@
+language: rust
+matrix:
+  include:
+  - rust: stable
+  - rust: beta
+  - rust: nightly
+addons:
+  apt:
+    sources:
+    - llvm-toolchain-precise-3.9
+    - ubuntu-toolchain-r-test
+    packages:
+      # Clang that comes by default is too old for bindgen
+    - libclang-3.9-dev
+cache:
+  directories:
+  - ${HOME}/.local
+env:
+  global:
+  - C_INCLUDE_PATH="$HOME/.local/include{C_INCLUDE_PATH+:}${C_INCLUDE_PATH}"
+  - LD_LIBRARY_PATH="$HOME/.local/lib${LD_LIBRARY_PATH+:}${LD_LIBRARY_PATH}"
+  - LIBRARY_PATH="$HOME/.local/lib${LIBRARY_PATH+:}${LIBRARY_PATH}"
+  - PATH="$HOME/.local/bin:${PATH}"
+  - LIBCLANG_PATH=/usr/lib/llvm-3.9/lib
+install:
+- |
+  # the OpenMPI APT package on Trusty is far too ancient
+  type mpiexec >/dev/null 2>&1 || {
+    curl -LSfs https://www.open-mpi.org/software/ompi/v2.1/downloads/openmpi-2.1.0.tar.gz | gunzip | tar xf - &&
+    (
+        cd openmpi-* &&
+        ./configure --prefix="${HOME}/.local" &&
+        make -j 2 install
+    ) >/dev/null # way too verbose
+  }
+script:
+- cargo build --verbose
+- cargo test --verbose
+- cargo build --example simple
+- ./run-examples

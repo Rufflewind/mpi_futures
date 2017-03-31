@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+mpiexec -np 16 target/debug/examples/simple
+mpiexec -np 16 target/debug/examples/simple_tokio

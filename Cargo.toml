@@ -1,0 +1,23 @@
+[package]
+name = "mpi_futures"
+version = "0.1.0"
+authors = ["Phil Ruffwind <rf@rufflewind.com>"]
+description = "Futures-based interface for Message (MPI)"
+documentation = "https://docs.rs/mpi_futures"
+repository = "https://github.com/Rufflewind/mpi_futures"
+readme = "README.md"
+keywords = ["futures", "message-passing", "mpi", "parallel"]
+categories = ["asynchronous", "concurrency", "science"]
+license = "MIT/Apache-2.0"
+exclude = [".gitignore"]
+
+[dependencies]
+conv = "0.3.3"
+futures = "0.1.11"
+libc = "0.2.21"
+mpi = { git = "https://github.com/bsteinb/rsmpi", branch = "bindgen-hack" }
+void = "1.0.2"
+
+[dev-dependencies]
+synchrotron = { git = "https://github.com/Rufflewind/synchrotron", branch = "master" }
+tokio-core = "0.1.6"
