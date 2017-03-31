@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Link","Used to perform MPI requests through a `Switch`."],["LinkedCodec","A combined `Link` and `Codec`."],["Switch","Scheduler for MPI communications."]]});

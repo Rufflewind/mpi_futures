@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AnchoredBox",""],["AnchoredBoxedSlice",""],["AnchoredVec",""]],"trait":[["OwnedBuffer","An owned buffer that can be read from."],["OwnedBufferMut","An owned buffer that can be modified."],["Unanchor","Upgrade an anchor back into its original owned buffer.  Not all buffers support this operation."]]});

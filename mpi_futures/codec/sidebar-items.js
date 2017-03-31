@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["U8Codec","Simple codec that simply treats every message as an array of octets and always sets the tag to zero."]],"trait":[["Codec",""],["RecvInto",""],["SendFrom",""]]});

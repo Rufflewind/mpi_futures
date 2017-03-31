@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `PlainRequest` struct in crate `mpi`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, PlainRequest">
+
+    <title>mpi::request::PlainRequest - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>mpi</a>::<wbr><a href='index.html'>request</a></p><script>window.sidebarCurrent = {name: 'PlainRequest', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>mpi</a>::<wbr><a href='index.html'>request</a>::<wbr><a class="struct" href=''>PlainRequest</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/mpi/request.rs.html#125' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'><div class="docblock attributes">#[must_use]
+</div>pub struct PlainRequest(_);</pre><div class='docblock'><p>A request object for an non-blocking operation that holds no references</p>
+
+<h1 id='examples' class='section-header'><a href='#examples'>Examples</a></h1>
+<p>See <code>examples/immediate_barrier.rs</code></p>
+
+<h1 id='standard-sections' class='section-header'><a href='#standard-sections'>Standard section(s)</a></h1>
+<p>3.7.1</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class="struct" href="../../mpi/request/struct.PlainRequest.html" title="struct mpi::request::PlainRequest">PlainRequest</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/mpi/request.rs.html#127-132' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.from_raw' class="method"><span id='from_raw.v' class='invisible'><code>fn <a href='#method.from_raw' class='fnname'>from_raw</a>(request: <a class="type" href="../../mpi/ffi/type.MPI_Request.html" title="type mpi::ffi::MPI_Request">MPI_Request</a>) -&gt; <a class="struct" href="../../mpi/request/struct.PlainRequest.html" title="struct mpi::request::PlainRequest">PlainRequest</a></code></span></h4>
+<div class='docblock'><p>Construct a request object from the raw MPI type</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="../../mpi/raw/trait.AsRaw.html" title="trait mpi::raw::AsRaw">AsRaw</a> for <a class="struct" href="../../mpi/request/struct.PlainRequest.html" title="struct mpi::request::PlainRequest">PlainRequest</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/mpi/request.rs.html#134-139' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='associatedtype.Raw' class="type"><span id='Raw.t' class='invisible'><code>type <a href='../../mpi/raw/trait.AsRaw.html#associatedtype.Raw' class="type">Raw</a> = <a class="type" href="../../mpi/ffi/type.MPI_Request.html" title="type mpi::ffi::MPI_Request">MPI_Request</a></code></span></h4>
+<div class='docblock'><p>The raw MPI C API type</p>
+</div><h4 id='method.as_raw' class="method"><span id='as_raw.v' class='invisible'><code>fn <a href='../../mpi/raw/trait.AsRaw.html#tymethod.as_raw' class='fnname'>as_raw</a>(&amp;self) -&gt; Self::<a class="trait" href="../../mpi/raw/trait.AsRaw.html" title="trait mpi::raw::AsRaw">Raw</a></code></span></h4>
+<div class='docblock'><p>The raw value</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="../../mpi/raw/trait.AsRawMut.html" title="trait mpi::raw::AsRawMut">AsRawMut</a> for <a class="struct" href="../../mpi/request/struct.PlainRequest.html" title="struct mpi::request::PlainRequest">PlainRequest</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/mpi/request.rs.html#141-145' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.as_raw_mut' class="method"><span id='as_raw_mut.v' class='invisible'><code>fn <a href='../../mpi/raw/trait.AsRawMut.html#tymethod.as_raw_mut' class='fnname'>as_raw_mut</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.pointer.html">*mut </a>Self::<a class="trait" href="../../mpi/raw/trait.AsRaw.html" title="trait mpi::raw::AsRaw">Raw</a></code></span></h4>
+<div class='docblock'><p>A mutable pointer to the raw value</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="../../mpi/request/trait.Request.html" title="trait mpi::request::Request">Request</a> for <a class="struct" href="../../mpi/request/struct.PlainRequest.html" title="struct mpi::request::PlainRequest">PlainRequest</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/mpi/request.rs.html#147' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.is_null' class="method"><span id='is_null.v' class='invisible'><code>fn <a href='../../mpi/request/trait.Request.html#method.is_null' class='fnname'>is_null</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<div class='docblock'><p>Returns true for a null request handle.</p>
+</div><h4 id='method.wait' class="method"><span id='wait.v' class='invisible'><code>fn <a href='../../mpi/request/trait.Request.html#method.wait' class='fnname'>wait</a>(self) -&gt; <a class="struct" href="../../mpi/point_to_point/struct.Status.html" title="struct mpi::point_to_point::Status">Status</a> <span class="where fmt-newline">where Self: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a></span></code></span></h4>
+<div class='docblock'><p>Wait for an operation to finish. <a href="../../mpi/request/trait.Request.html#method.wait">Read more</a></p>
+</div><h4 id='method.test' class="method"><span id='test.v' class='invisible'><code>fn <a href='../../mpi/request/trait.Request.html#method.test' class='fnname'>test</a>(self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../mpi/point_to_point/struct.Status.html" title="struct mpi::point_to_point::Status">Status</a>, Self&gt; <span class="where fmt-newline">where Self: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a></span></code></span></h4>
+<div class='docblock'><p>Test whether an operation has finished. <a href="../../mpi/request/trait.Request.html#method.test">Read more</a></p>
+</div><h4 id='method.cancel' class="method"><span id='cancel.v' class='invisible'><code>fn <a href='../../mpi/request/trait.Request.html#method.cancel' class='fnname'>cancel</a>(self) <span class="where fmt-newline">where Self: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a></span></code></span></h4>
+<div class='docblock'><p>Cancel an operation. <a href="../../mpi/request/trait.Request.html#method.cancel">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html" title="trait core::ops::Drop">Drop</a> for <a class="struct" href="../../mpi/request/struct.PlainRequest.html" title="struct mpi::request::PlainRequest">PlainRequest</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/mpi/request.rs.html#149-154' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.drop' class="method"><span id='drop.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop' class='fnname'>drop</a>(&amp;mut self)</code></span></h4>
+<div class='docblock'><p>A method called when the value goes out of scope. <a href="https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "mpi";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

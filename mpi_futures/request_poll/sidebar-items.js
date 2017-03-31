@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RequestPoll","Manages a collection of requests and keeps their associated buffers alive."]]});

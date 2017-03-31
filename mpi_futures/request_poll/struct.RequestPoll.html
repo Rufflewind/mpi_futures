@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `RequestPoll` struct in crate `mpi_futures`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, RequestPoll">
+
+    <title>mpi_futures::request_poll::RequestPoll - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>mpi_futures</a>::<wbr><a href='index.html'>request_poll</a></p><script>window.sidebarCurrent = {name: 'RequestPoll', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>mpi_futures</a>::<wbr><a href='index.html'>request_poll</a>::<wbr><a class="struct" href=''>RequestPoll</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/mpi_futures/request_poll.rs.html#51-64' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct RequestPoll&lt;'a&gt; { /* fields omitted */ }</pre><div class='docblock'><p>Manages a collection of requests and keeps their associated buffers alive.</p>
+
+<p>When <code>RequestPoll</code> is dropped, all pending requests will be canceled when
+possible and waited on.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class="struct" href="../../mpi_futures/request_poll/struct.RequestPoll.html" title="struct mpi_futures::request_poll::RequestPoll">RequestPoll</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/mpi_futures/request_poll.rs.html#139-277' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.test' class="method"><span id='test.v' class='invisible'><code>fn <a href='#method.test' class='fnname'>test</a>(&amp;mut self)</code></span></h4>
+<div class='docblock'><p>Non-blocking test to see if some of the requests have completed.  For
+any request that is complete, the corresponding callback is called.</p>
+</div><h4 id='method.wait' class="method"><span id='wait.v' class='invisible'><code>fn <a href='#method.wait' class='fnname'>wait</a>(&amp;mut self)</code></span></h4>
+<div class='docblock'><p>Block until at least one request has completed.  Otherwise functions
+similar to <code>test</code>.</p>
+</div><h4 id='method.mrecv' class="method"><span id='mrecv.v' class='invisible'><code>fn <a href='#method.mrecv' class='fnname'>mrecv</a>&lt;B, F&gt;(&amp;mut self, msg: <a class="struct" href="../../mpi/point_to_point/struct.Message.html" title="struct mpi::point_to_point::Message">Message</a>, buf: B, callback: F) <span class="where fmt-newline">where B: <a class="trait" href="../../mpi_futures/buffer/trait.OwnedBufferMut.html" title="trait mpi_futures::buffer::OwnedBufferMut">OwnedBufferMut</a>, B::<a class="trait" href="../../mpi_futures/buffer/trait.OwnedBufferMut.html" title="trait mpi_futures::buffer::OwnedBufferMut">Anchor</a>: 'a, F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.FnOnce.html" title="trait core::ops::FnOnce">FnOnce</a>(B::<a class="trait" href="../../mpi_futures/buffer/trait.OwnedBufferMut.html" title="trait mpi_futures::buffer::OwnedBufferMut">Anchor</a>) + 'a</span></code></span></h4>
+<div class='docblock'><p>Perform a matched receive on a message.</p>
+</div><h4 id='method.send' class="method"><span id='send.v' class='invisible'><code>fn <a href='#method.send' class='fnname'>send</a>&lt;D, B, F&gt;(&amp;mut self, dest: D, buf: B, tag: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>, callback: F) <span class="where fmt-newline">where D: <a class="trait" href="../../mpi/point_to_point/trait.Destination.html" title="trait mpi::point_to_point::Destination">Destination</a>, B: <a class="trait" href="../../mpi_futures/buffer/trait.OwnedBuffer.html" title="trait mpi_futures::buffer::OwnedBuffer">OwnedBuffer</a> + 'a, F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.FnOnce.html" title="trait core::ops::FnOnce">FnOnce</a>(B) + 'a</span></code></span></h4>
+<div class='docblock'><p>Send a message.</p>
+</div><h4 id='method.insert' class="method"><span id='insert.v' class='invisible'><code>unsafe fn <a href='#method.insert' class='fnname'>insert</a>&lt;F&gt;(&amp;mut self,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; request: <a class="type" href="../../mpi/ffi/functions_and_types/type.MPI_Request.html" title="type mpi::ffi::functions_and_types::MPI_Request">MPI_Request</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; callback: F,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cancelable: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) <span class="where fmt-newline">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.FnOnce.html" title="trait core::ops::FnOnce">FnOnce</a>() + 'a</span></code></span></h4>
+<div class='docblock'><p>Insert a request to be monitored.</p>
+
+<p><code>cancelable</code> indicates whether <code>MPI_Cancel</code> will work on the request
+(<code>true</code> for receiving requests, <code>false</code> for all other requests).</p>
+
+<h1 id='unsafety' class='section-header'><a href='#unsafety'>Unsafety</a></h1>
+<p>The request must be valid (in particular, not <code>MPI_REQUEST_NULL</code>).
+The buffers associated with the request must survive so long as the
+callback remains alive.</p>
+</div><h4 id='method.reserve_one' class="method"><span id='reserve_one.v' class='invisible'><code>fn <a href='#method.reserve_one' class='fnname'>reserve_one</a>(&amp;mut self)</code></span></h4>
+<div class='docblock'><p>Allocate room for a single request if necessary.</p>
+
+<h1 id='panics' class='section-header'><a href='#panics'>Panics</a></h1>
+<p>Panics if the internal capacity overflows <code>usize</code>.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="struct" href="../../mpi_futures/request_poll/struct.RequestPoll.html" title="struct mpi_futures::request_poll::RequestPoll">RequestPoll</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/mpi_futures/request_poll.rs.html#66-77' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, f: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html" title="trait core::default::Default">Default</a> for <a class="struct" href="../../mpi_futures/request_poll/struct.RequestPoll.html" title="struct mpi_futures::request_poll::RequestPoll">RequestPoll</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/mpi_futures/request_poll.rs.html#79-88' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.default' class="method"><span id='default.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default' class='fnname'>default</a>() -&gt; Self</code></span></h4>
+<div class='docblock'><p>Returns the &quot;default value&quot; for a type. <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html" title="trait core::ops::Drop">Drop</a> for <a class="struct" href="../../mpi_futures/request_poll/struct.RequestPoll.html" title="struct mpi_futures::request_poll::RequestPoll">RequestPoll</a>&lt;'a&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/mpi_futures/request_poll.rs.html#116-137' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.drop' class="method"><span id='drop.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop' class='fnname'>drop</a>(&amp;mut self)</code></span></h4>
+<div class='docblock'><p>A method called when the value goes out of scope. <a href="https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "mpi_futures";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>
