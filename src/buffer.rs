@@ -39,7 +39,17 @@ unsafe impl<T: Equivalence> OwnedBuffer for Vec<T> {
     fn as_buffer(&self) -> &Self::Buffer { self }
 }
 
+unsafe impl<T: Equivalence> OwnedBuffer for Rc<Box<[T]>> {
+    type Buffer = [T];
+    fn as_buffer(&self) -> &Self::Buffer { self }
+}
+
 unsafe impl<T: Equivalence> OwnedBuffer for Rc<Vec<T>> {
+    type Buffer = [T];
+    fn as_buffer(&self) -> &Self::Buffer { self }
+}
+
+unsafe impl<T: Equivalence> OwnedBuffer for Arc<Box<[T]>> {
     type Buffer = [T];
     fn as_buffer(&self) -> &Self::Buffer { self }
 }

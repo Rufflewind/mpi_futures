@@ -4,11 +4,11 @@ use futures::unsync::oneshot;
 use mpi::point_to_point::Destination;
 use void::Void;
 use super::buffer::OwnedBuffer;
-use super::codec::{Codec, SendFrom};
+use super::codec::{Encoder, SendFrom};
 use super::request_poll::RequestPoll;
 use super::switch::Link;
 
-enum State<'a, C: Codec<'a>, D> {
+enum State<'a, C: Encoder<'a>, D> {
     Pending {
         link: Link<'a>,
         codec: C,
@@ -22,7 +22,7 @@ enum State<'a, C: Codec<'a>, D> {
 }
 
 impl<'a, C, D> fmt::Debug for State<'a, C, D>
-    where C: Codec<'a> + fmt::Debug,
+    where C: Encoder<'a> + fmt::Debug,
           C::Message: fmt::Debug,
           D: fmt::Debug,
 {
@@ -45,10 +45,10 @@ impl<'a, C, D> fmt::Debug for State<'a, C, D>
     }
 }
 
-pub struct Send<'a, C: Codec<'a>, D>(State<'a, C, D>);
+pub struct Send<'a, C: Encoder<'a>, D>(State<'a, C, D>);
 
 impl<'a, C, D> fmt::Debug for Send<'a, C, D>
-    where C: Codec<'a> + fmt::Debug,
+    where C: Encoder<'a> + fmt::Debug,
           C::Message: fmt::Debug,
           D: fmt::Debug,
 {
@@ -59,7 +59,7 @@ impl<'a, C, D> fmt::Debug for Send<'a, C, D>
     }
 }
 
-impl<'a, C: Codec<'a>, D: Destination> Send<'a, C, D> {
+impl<'a, C: Encoder<'a>, D: Destination> Send<'a, C, D> {
     pub fn new(link: Link<'a>, codec: C, dest: D, msg: C::Message) -> Self {
         Send(State::Pending {
             link: link,
@@ -78,7 +78,7 @@ struct SendFromImpl<'b, 'a: 'b, D> {
 
 impl<'b, 'a, D: Destination> SendFrom<'a> for SendFromImpl<'b, 'a, D> {
     // we don't really use the Output type for anything but we keep it in the
-    // trait anyway to enforce some sanity in the implementation of Codec
+    // trait anyway to enforce some sanity in the implementation of Encoder
     type Output = ();
     fn send_from<B: OwnedBuffer + 'a>(self, buf: B, tag: u16)
                                       -> Self::Output {
@@ -89,7 +89,7 @@ impl<'b, 'a, D: Destination> SendFrom<'a> for SendFromImpl<'b, 'a, D> {
     }
 }
 
-impl<'a, C: Codec<'a>, D: Destination> Future for Send<'a, C, D> {
+impl<'a, C: Encoder<'a>, D: Destination> Future for Send<'a, C, D> {
     type Item = ();
     type Error = Void;
     fn poll(&mut self) -> Poll<Self::Item, Self::Error> {

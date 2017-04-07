@@ -14,14 +14,15 @@ fn main() {
     let comm = world.duplicate();
     let mut core = synchrotron::Core::default();
     let switch = Switch::default();
-    let link = switch.link().with_codec(U8Codec);
+    let link = switch.link();
     let handle = core.handle();
     let my_rank = comm.rank();
     let comm_size = comm.size();
     let target_rank = (my_rank + 1) % comm_size;
     handle.spawn(switch);
     handle.spawn({
-        link.send(comm.process_at_rank(target_rank),
+        link.send(U8Codec,
+                  comm.process_at_rank(target_rank),
                   Vec::from(b"hello world" as &[u8]))
             .map(move |_| {
                 println!("{}: sent to {}!", my_rank, target_rank)
@@ -30,14 +31,14 @@ fn main() {
             })
     });
     core.run(
-        link.incoming(comm.any_process())
+        link.incoming(U8Codec, comm.any_process())
             .buffered(1)
             .for_each(|(status, msg)| {
                 println!("{}: received {:?} from {}",
                          my_rank,
                          String::from_utf8(msg).unwrap(),
                          status.source_rank());
-                link.link.close();
+                link.close();
                 Ok(())
             })
     ).unwrap();

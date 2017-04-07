@@ -3,24 +3,24 @@ use futures::unsync::oneshot;
 use mpi::point_to_point::{Message, Source, Status};
 use void::Void;
 use super::buffer::Unanchor;
-use super::codec::{Codec, RecvInto};
+use super::codec::{Decoder, RecvInto};
 use super::request_poll::RequestPoll;
 use super::switch::Link;
 
 /// Represents a stream of incoming messages.
 ///
 /// ```ignore
-/// Incoming<Source, Codec>: Stream<Future<(Status, Codec::Message)>>
+/// Incoming<Source, Decoder>: Stream<Future<(Status, Message)>>
 /// ```
 #[derive(Debug)]
 #[must_use = "streams do nothing unless polled"]
-pub struct Incoming<'a, C: Codec<'a>, S: Source> {
+pub struct Incoming<'a, C: Decoder<'a>, S: Source> {
     link: Link<'a>,
     codec: C,
     source: S,
 }
 
-impl<'a, C: Codec<'a>, S: Source> Incoming<'a, C, S> {
+impl<'a, C: Decoder<'a>, S: Source> Incoming<'a, C, S> {
     pub fn new(link: Link<'a>, codec: C, source: S) -> Self {
         Self {
             link: link.clone(),
@@ -30,19 +30,24 @@ impl<'a, C: Codec<'a>, S: Source> Incoming<'a, C, S> {
     }
 }
 
-impl<'a, C: Codec<'a>, S: Source> Stream for Incoming<'a, C, S> {
+impl<'a, C: Decoder<'a>, S: Source> Stream for Incoming<'a, C, S> {
     type Item = WithStatus<C::FutureMessage>;
     type Error = Void;
     fn poll(&mut self) -> Poll<Option<Self::Item>, Self::Error> {
+        let codec = &mut self.codec;
+        let source = &self.source;
         self.link.modify_request_poll(|request_poll| match request_poll {
             None => Ok(Async::Ready(None)),
-            Some(request_poll) => match self.source.immediate_matched_probe() {
+            Some(request_poll) => match source.immediate_matched_probe() {
                 Some((msg, status)) => {
                     let recv_into = RecvIntoImpl {
                         request_poll: request_poll,
                         msg: msg,
+                        // unsafe invariant: status must be associated with
+                        // the correct message or else recv_into_vec is unsafe
+                        status: status,
                     };
-                    let ((), fut_msg) = self.codec.decode(status, recv_into);
+                    let ((), fut_msg) = codec.decode(recv_into);
                     Ok(Async::Ready(Some(WithStatus(status, fut_msg))))
                 }
                 None => {
@@ -72,12 +77,18 @@ impl<B> Future for FutureBuffer<B> {
 struct RecvIntoImpl<'b, 'a: 'b> {
     request_poll: &'b mut RequestPoll<'a>,
     msg: Message,
+    status: Status,
 }
 
 impl<'b, 'a> RecvInto<'a> for RecvIntoImpl<'b, 'a> {
     // we don't really use the Output type for anything but we keep it in the
-    // trait anyway to enforce some sanity in the implementation of Codec
+    // trait anyway to enforce some sanity in the implementation of Decoder
     type Output = ();
+
+    fn status(&self) -> &Status {
+        &self.status
+    }
+
     fn recv_into<B: Unanchor + 'a>(self, buf: B)
                                    -> (Self::Output, FutureBuffer<B>) {
         let (sender, receiver) = oneshot::channel();

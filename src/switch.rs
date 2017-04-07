@@ -5,7 +5,7 @@ use futures::{Async, Future, Poll};
 use futures::task;
 use mpi::point_to_point::{Destination, Source};
 use super::request_poll::RequestPoll;
-use super::codec::Codec;
+use super::codec::{Decoder, Encoder};
 use super::incoming::Incoming;
 use super::send::Send;
 
@@ -78,15 +78,36 @@ impl<'a> Link<'a> {
         });
     }
 
-    /// Combine the `Link` with a `Codec` to create a `LinkedCodec`, which can
-    /// be used to send and receive messages.
-    pub fn with_codec<C>(self, codec: C) -> LinkedCodec<'a, C>
-        where C: Codec<'a> + Clone
-    {
-        LinkedCodec {
-            link: self,
-            codec: codec,
-        }
+    /// Obtain a `Stream` of future incoming messages from the given `source`.
+    /// Each message is decoded using the given codec.
+    ///
+    /// ```ignore
+    /// fn incoming(&self, Source) -> Stream<Future<Message>>;
+    /// ```
+    ///
+    /// The stream will keep running until the `Switch` is `close`d, but you
+    /// can stop the `Stream` at any time if you aren't expecting to receive
+    /// messages.  You can even create a new `incoming` stream every time you
+    /// want to receive a message.
+    ///
+    /// Just try to avoid running multiple overlapping `incoming` streams
+    /// simultaneously, as that could cause messages to be split between the
+    /// streams in a non-deterministic manner.
+    pub fn incoming<D: Decoder<'a>, S: Source>(&self, decoder: D, source: S)
+                                               -> Incoming<'a, D, S> {
+        Incoming::new(self.clone(), decoder, source)
+    }
+
+    /// Send a message asynchronously, returning a `Future` that completes
+    /// when the send does.
+    ///
+    /// ```ignore
+    /// fn send(&self, Destination, Message) -> Future<()>;
+    /// ```
+    pub fn send<E: Encoder<'a>, D: Destination>(&self, encoder: E, dest: D,
+                                                msg: E::Message)
+                                                -> Send<'a, E, D> {
+        Send::new(self.clone(), encoder, dest, msg)
     }
 
     /// Modify the internal `RequestPoll`, if the `Switch` is still alive.
@@ -99,52 +120,5 @@ impl<'a> Link<'a> {
             None => f(None),
             Some(inner) => f(Some(&mut inner.borrow_mut().request_poll)),
         }
-    }
-}
-
-/// A combined `Link` and `Codec`.
-#[derive(Debug, Clone)]
-pub struct LinkedCodec<'a, C: Codec<'a> + Clone> {
-    /// The `Link` to the `Switch`.
-    pub link: Link<'a>,
-    /// The message `Codec`.
-    pub codec: C,
-}
-
-impl<'a, C: Codec<'a> + Clone> LinkedCodec<'a, C> {
-    /// Obtain a `Stream` of future incoming messages from the given `source`.
-    /// Each message is decoded using the given `codec`.
-    ///
-    /// ```ignore
-    /// fn incoming(&self, Source) -> Stream<Future<Codec::Message>>;
-    /// ```
-    ///
-    /// The stream will keep running until the `Switch` is `close`d, but you
-    /// can stop the `Stream` at any time if you aren't expecting to receive
-    /// messages.  You can even create a new `incoming` stream every time you
-    /// want to receive a message.
-    ///
-    /// Just try to avoid running multiple overlapping `incoming` streams
-    /// simultaneously, as that could cause messages to be split between the
-    /// streams in a non-deterministic manner.
-    pub fn incoming<S: Source>(&self, source: S) -> Incoming<'a, C, S> {
-
-        Incoming::new(self.link.clone(), self.codec.clone(), source)
-    }
-
-    /// Send a message asynchronously, returning a `Future` that completes
-    /// when the send does.
-    ///
-    /// ```ignore
-    /// fn send(&self, Destination, Codec::Message) -> Future<()>;
-    /// ```
-    pub fn send<D: Destination>(&self, dest: D, msg: C::Message)
-                                -> Send<'a, C, D> {
-        Send::new(self.link.clone(), self.codec.clone(), dest, msg)
-    }
-
-    /// Same as [`Link::close`](struct.Link.html#method.close).
-    pub fn close(&self) {
-        self.link.close()
     }
 }
