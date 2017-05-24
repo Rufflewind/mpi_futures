@@ -15,7 +15,7 @@ exclude = [".gitignore"]
 conv = "0.3.3"
 futures = "0.1.11"
 libc = "0.2.21"
-mpi = { git = "https://github.com/bsteinb/rsmpi", branch = "bindgen-hack" }
+mpi = { git = "https://github.com/bsteinb/rsmpi", branch = "master" }
 void = "1.0.2"
 
 [dev-dependencies]

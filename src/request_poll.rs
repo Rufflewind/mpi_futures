@@ -44,6 +44,13 @@ impl<F: FnOnce()> Callback for CallbackImpl<F> {
     }
 }
 
+struct UnsafeScope;
+
+unsafe impl<'a> mpi::request::Scope<'a> for UnsafeScope {
+    fn register(&self) {}
+    unsafe fn unregister(&self) {}
+}
+
 /// Manages a collection of requests and keeps their associated buffers alive.
 ///
 /// When `RequestPoll` is dropped, all pending requests will be canceled when
@@ -217,7 +224,7 @@ impl<'a> RequestPoll<'a> {
         self.reserve_one();             // may panic
         unsafe {
             let (anchor, buf) = buf.into_buffer_mut();
-            let request = msg.immediate_matched_receive_into(buf);
+            let request = msg.immediate_matched_receive_into(UnsafeScope, buf);
             let callback = move || callback(anchor);
             self.insert(request.as_raw(), callback, true);
             mem::forget(request);
@@ -238,7 +245,7 @@ impl<'a> RequestPoll<'a> {
         let tag = tag.value_into().unwrap();
         unsafe {
             let buf_ref = unbind_buffer(&buf);
-            let request = dest.immediate_send_with_tag(buf_ref, tag);
+            let request = dest.immediate_send_with_tag(UnsafeScope, buf_ref, tag);
             let callback = move || callback(buf);
             self.insert(request.as_raw(), callback, false);
             std::mem::forget(request);
