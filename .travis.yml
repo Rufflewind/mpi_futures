@@ -12,6 +12,8 @@ addons:
     packages:
     # Clang that comes by default is too old for bindgen
     - libclang-3.9-dev
+    # mpi.libffi dependency
+    - texinfo
 cache:
   directories:
   - $HOME/.local

@@ -1,6 +1,6 @@
 [package]
 name = "mpi_futures"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Phil Ruffwind <rf@rufflewind.com>"]
 description = "Futures-based interface for Message (MPI)"
 documentation = "https://docs.rs/mpi_futures"
@@ -15,7 +15,7 @@ exclude = [".gitignore"]
 conv = "0.3.3"
 futures = "0.1.11"
 libc = "0.2.21"
-mpi = { git = "https://github.com/bsteinb/rsmpi", branch = "master" }
+mpi = "0.5.4"
 void = "1.0.2"
 
 [dev-dependencies]
