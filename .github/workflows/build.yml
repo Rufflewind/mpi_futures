@@ -1,0 +1,18 @@
+name: build
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: 12 20 3 * *
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - run: sudo apt-get -y install libopenmpi-dev
+      - uses: actions/checkout@v2
+      - uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: -v --all-features
+      - run: ./run-examples
